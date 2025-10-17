@@ -1,0 +1,6 @@
+*.egg-info
+__pycache__/
+dist/
+
+# uv related artifacts
+uv.lock
