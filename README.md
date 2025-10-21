@@ -14,3 +14,14 @@ NGECx.gpu_available()
 NGECx.mps_available()
 NGECx.vllm_importable()
 ```
+
+## Install
+
+Clone the repo, then, if using the `uv` package manager:
+
+```bash
+uv venv --python 3.13
+source .venv/bin/activate
+
+uv sync  # this should also install NGECx
+```
