@@ -52,7 +52,10 @@ Platform specific install commands are below.
 uv init --python 3.13 
 uv venv --seed
 source .venv/bin/activate
+
 uv add torch torchvision
+uv run check_mps.py
+
 uv add git+https://github.com/ahalterman/NGEC-2025 --extra models
 
 uv run main.py --mps
@@ -60,11 +63,16 @@ uv run main.py --mps
 
 ## macOS with MPS and mlx
 
+Skip this; it doesn't work correctly
+
 ```
 uv init --python 3.13 
 uv venv --seed
 source .venv/bin/activate
+
 uv add torch torchvision
+uv run check_mps.py
+
 uv add git+https://github.com/ahalterman/NGEC-2025 --extra models --extra mlx
 
 uv run main.py --backend mlx
@@ -95,24 +103,96 @@ Actor resolver test works
 ## Windows with CPU and transformers
 
 
+```
+uv init --python 3.13 
+uv venv --seed
+source .venv/bin/activate
+
+# Task 1: this next line needs to be verified
+uv add torch torchvision
+# Test this works
+uv run check_cpu.py
+
+uv add git+https://github.com/ahalterman/NGEC-2025 --extra models
+
+uv run main.py 
+```
+
 ## Windows with GPU and transformers
+
+
+```
+uv init --python 3.13 
+uv venv --seed
+source .venv/bin/activate
+
+# Task 1: this next line needs to be verified
+# Probably wrong
+uv add torch torchvision
+# Test this works
+uv run check_gpu.py
+
+uv add git+https://github.com/ahalterman/NGEC-2025 --extra models
+
+uv run main.py --gpu
+```
 
 
 ## Windows with CPU and vllm
 
 ```
-uv add git+https://github.com/ahalterman/NGEC-2025 --extra models --extra vllm
-```
+uv init --python 3.13 
+uv venv --seed
+source .venv/bin/activate
 
+# Task 1: this next line needs to be verified
+uv add torch torchvision
+# Test this works
+uv run check_gpu.py
+
+uv add git+https://github.com/ahalterman/NGEC-2025 --extra models --extra vllm
+
+uv run main.py --backend vllm 
+```
 
 ## Windows with GPU and vllm
 
 
 ## Linux with GPU and transformers
 
+```
+uv init --python 3.13 
+uv venv --seed
+source .venv/bin/activate
+
+# Task 1: this next line needs to be verified
+# I think this works with CUDA 12.8?
+uv add torch torchvision
+# Test this works
+uv run check_gpu.py
+
+uv add git+https://github.com/ahalterman/NGEC-2025 --extra models 
+
+uv run main.py --gpu
+```
 
 ## Linux with GPU and vllm
 
+```
+uv init --python 3.13 
+uv venv --seed
+source .venv/bin/activate
+
+# Task 1: this next line needs to be verified
+# I think this works with CUDA 12.8?
+uv add torch torchvision
+# Test this works
+uv run check_gpu.py
+
+uv add git+https://github.com/ahalterman/NGEC-2025 --extra models --extra vllm
+
+uv run main.py --gpu --backend vllm
+```
 
 ## Linux with CPU and transformers
 

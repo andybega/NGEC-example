@@ -35,7 +35,12 @@ def mps_available() -> bool:
 
 def gpu_available() -> bool:
     import torch
-    return torch.cuda.is_available()
+    if torch.cuda.is_available():
+        gpu_device = torch.device("cuda")
+        x = torch.ones(1, device=gpu_device)
+        return True
+    else:
+        return False
 
 
 def vllm_importable() -> bool:
