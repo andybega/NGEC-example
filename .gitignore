@@ -4,3 +4,6 @@ dist/
 
 # uv related artifacts
 uv.lock
+pyproject.toml
+.venv/
+.python-version
