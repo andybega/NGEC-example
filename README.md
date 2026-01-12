@@ -63,7 +63,6 @@ uv run main.py --mps
 
 ## macOS with MPS and mlx
 
-Skip this; it doesn't work correctly
 
 ```
 uv init --python 3.13 
@@ -76,27 +75,6 @@ uv run check_mps.py
 uv add git+https://github.com/ahalterman/NGEC-2025 --extra models --extra mlx
 
 uv run main.py --backend mlx
-```
-
-Not working:
-
-```
-Platform: macOS-15.6.1-arm64-arm-64bit-Mach-O
-Python version: 3.13.7 (main, Sep  2 2025, 14:05:52) [Clang 20.1.4 ]
-Torch can be imported
-# Checking device availability (selected: gpu=False, mps=False)
-Using CPU
-# Checking backend (selected: mlx)
-MLX backend selected and MLX can be imported
-# Checking NGEC functionality
-NGEC can be imported
-Attribute model test is not working, error message:
-mlx_lm is not installed. Please install it or use another backend.
-`torch_dtype` is deprecated! Use `dtype` instead!
-`torch_dtype` is deprecated! Use `dtype` instead!
-2026-01-09 10:27:28,360 ngec.actor_resolution WARNING  Classifier not found at /Users/andy/projects/2025-ngec/NGEC-example/.venv/lib/python3.13/site-packages/ngec/assets/actor_classifier.pkl. Using similarity matching.
-2026-01-09 10:27:28,465 ngec.actor_resolution WARNING  Using context-based XGBoost model for *no context* ranking.
-Actor resolver test works
 ```
 
 
