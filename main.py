@@ -3,6 +3,39 @@ import argparse
 import platform
 
 
+def try_load_dotenv():
+    """Load environment variables from a .env file if it exists."""
+    import os
+    from pathlib import Path
+    
+    env_file = Path(".env")
+    if not env_file.exists():
+        return
+    
+    with open(env_file, 'r', encoding='utf-8') as f:
+        for line in f:
+            line = line.strip()
+            # Skip empty lines and comments
+            if not line or line.startswith('#'):
+                continue
+            
+            # Parse KEY=VALUE pairs
+            if '=' in line:
+                key, value = line.split('=', 1)
+                key = key.strip()
+                value = value.strip()
+                
+                # Remove quotes if present
+                if value.startswith('"') and value.endswith('"'):
+                    value = value[1:-1]
+                elif value.startswith("'") and value.endswith("'"):
+                    value = value[1:-1]
+                
+                # Set environment variable only if not already set
+                if key and key not in os.environ:
+                    os.environ[key] = value
+
+
 def detect_platform() -> str:
     return platform.platform()
 
@@ -128,7 +161,7 @@ def main(os="macOS", gpu=False, mps=True, backend="transformers"):
     print(f"Platform: {detect_platform()}")
     print(f"Python version: {sys.version}")
 
-
+    try_load_dotenv()
     user, password = get_es_credentials()
 
     if not torch_available():

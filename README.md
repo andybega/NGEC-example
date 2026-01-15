@@ -11,6 +11,14 @@ deactivate 2>/dev/null || true
 bash ./reset_env.sh
 ```
 
+On Windows:
+
+```pwsh
+deactivate
+.\reset_env.ps1
+```
+
+
 The tests in `main.py` depend on these two environment variables, fill in the correct info and make sure they are set:
 
 ```
@@ -48,7 +56,7 @@ Platform specific install commands are below.
 
 ## macOS with MPS and transformers
 
-```
+```sh
 uv init --python 3.13 
 uv venv --seed
 source .venv/bin/activate
@@ -64,7 +72,7 @@ uv run main.py --mps
 ## macOS with MPS and mlx
 
 
-```
+```sh
 uv init --python 3.13 
 uv venv --seed
 source .venv/bin/activate
@@ -80,14 +88,15 @@ uv run main.py --backend mlx
 
 ## Windows with CPU and transformers
 
+Known issue; don't run yet
 
-```
+```powershell
 uv init --python 3.13 
 uv venv --seed
-source .venv/bin/activate
+.venv\Scripts\Activate
 
 # Task 1: this next line needs to be verified
-uv add torch torchvision
+uv add torch torchvision 
 # Test this works
 uv run check_cpu.py
 
@@ -96,18 +105,34 @@ uv add git+https://github.com/ahalterman/NGEC-2025 --extra models
 uv run main.py 
 ```
 
-## Windows with GPU and transformers
-
+```
+Detected OS: Windows
+Platform: Windows-11-10.0.26200-SP0
+Python version: 3.13.7 (main, Aug 18 2025, 19:16:27) [MSC v.1944 64 bit (AMD64)]
+Torch can be imported
+# Checking device availability (selected: gpu=False, mps=False)
+# Checking backend (selected: transformers)
+Transformers backend selected
+# Checking NGEC functionality
+NGEC can be imported
+Device set to use cpu
+Attribute model test works
+Actor resolver test is not working, error message:
+unsupported operand type(s) for +: 'WindowsPath' and 'str'
 
 ```
+
+## Windows with GPU and transformers
+
+Known issue; don't run yet
+
+```powershell
 uv init --python 3.13 
 uv venv --seed
-source .venv/bin/activate
+.venv\Scripts\Activate
 
-# Task 1: this next line needs to be verified
-# Probably wrong
-uv add torch torchvision
-# Test this works
+# Adjust for CUDA version
+uv pip install torch torchvision --index-url https://download.pytorch.org/whl/cu130
 uv run check_gpu.py
 
 uv add git+https://github.com/ahalterman/NGEC-2025 --extra models
@@ -115,13 +140,47 @@ uv add git+https://github.com/ahalterman/NGEC-2025 --extra models
 uv run main.py --gpu
 ```
 
+```
+Detected OS: Windows
+Platform: Windows-11-10.0.26200-SP0
+Python version: 3.13.7 (main, Aug 18 2025, 19:16:27) [MSC v.1944 64 bit (AMD64)]
+Torch can be imported
+# Checking device availability (selected: gpu=True, mps=False)
+# Checking backend (selected: transformers)
+Transformers backend selected
+# Checking NGEC functionality
+NGEC can be imported
+`torch_dtype` is deprecated! Use `dtype` instead!
+Device set to use cuda:0
+Attribute model test works
+Actor resolver test is not working, error message:
+unsupported operand type(s) for +: 'WindowsPath' and 'str'
+```
+
 
 ## Windows with CPU and vllm
 
-```
+```powershell
 uv init --python 3.13 
 uv venv --seed
-source .venv/bin/activate
+.venv\Scripts\Activate
+
+# Task 1: this next line needs to be verified
+uv add torch torchvision
+# Test this works
+uv run check_cpu.py
+
+uv add git+https://github.com/ahalterman/NGEC-2025 --extra models --extra vllm
+
+uv run main.py --backend vllm 
+```
+
+## Windows with GPU and vllm
+
+```powershell
+uv init --python 3.13 
+uv venv --seed
+.venv\Scripts\Activate
 
 # Task 1: this next line needs to be verified
 uv add torch torchvision
@@ -132,9 +191,6 @@ uv add git+https://github.com/ahalterman/NGEC-2025 --extra models --extra vllm
 
 uv run main.py --backend vllm 
 ```
-
-## Windows with GPU and vllm
-
 
 ## Linux with GPU and transformers
 
