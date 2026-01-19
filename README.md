@@ -54,6 +54,17 @@ options:
 
 Platform specific install commands are below. 
 
+|    OS   | Device | Transformers | vLLM | mlx | 
+|---------|--------|--------------|------|-----|
+| Linux   | CPU    | [link](#linux-with-cpu-and-transformers) | ?? [link](#linux-with-cpu-and-vllm) | - |
+|         | GPU    | [link](#linux-with-gpu-and-transformers) | [link](#linux-with-gpu-and-vllm) | - |
+| macOS   | CPU    | ?? [link](#macos-with-cpu-and-transformers) | - | ?? [link](#macos-with-cpu-and-mlx) |
+|         | MPS    | [link](#macos-with-mps-and-transformers) | - | [link](#macos-with-mps-and-mlx) |
+| Windows | CPU    | [link](#windows-with-cpu-and-transformers) | ?? [link](#windows-with-cpu-and-vllm) | - |
+|         | GPU    | [link](#windows-with-gpu-and-transformers) | ?? [link](#windows-with-gpu-and-vllm) | - |
+
+?? = maybe possible; \- = not possible
+
 ## macOS with MPS and transformers
 
 ```sh
@@ -88,16 +99,14 @@ uv run main.py --backend mlx
 
 ## Windows with CPU and transformers
 
-Known issue; don't run yet
+Hangs somewhere, not sure why. 
 
 ```powershell
 uv init --python 3.13 
 uv venv --seed
 .venv\Scripts\Activate
 
-# Task 1: this next line needs to be verified
 uv add torch torchvision 
-# Test this works
 uv run check_cpu.py
 
 uv add git+https://github.com/ahalterman/NGEC-2025 --extra models
@@ -105,22 +114,6 @@ uv add git+https://github.com/ahalterman/NGEC-2025 --extra models
 uv run main.py 
 ```
 
-```
-Detected OS: Windows
-Platform: Windows-11-10.0.26200-SP0
-Python version: 3.13.7 (main, Aug 18 2025, 19:16:27) [MSC v.1944 64 bit (AMD64)]
-Torch can be imported
-# Checking device availability (selected: gpu=False, mps=False)
-# Checking backend (selected: transformers)
-Transformers backend selected
-# Checking NGEC functionality
-NGEC can be imported
-Device set to use cpu
-Attribute model test works
-Actor resolver test is not working, error message:
-unsupported operand type(s) for +: 'WindowsPath' and 'str'
-
-```
 
 ## Windows with GPU and transformers
 
@@ -174,6 +167,7 @@ uv add git+https://github.com/ahalterman/NGEC-2025 --extra models --extra vllm
 
 uv run main.py --backend vllm 
 ```
+
 
 ## Windows with GPU and vllm
 
