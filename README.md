@@ -56,14 +56,18 @@ Platform specific install commands are below.
 
 |    OS   | Device | Transformers | vLLM | mlx | 
 |---------|--------|--------------|------|-----|
-| Linux   | CPU    | [link](#linux-with-cpu-and-transformers) | ?? [link](#linux-with-cpu-and-vllm) | - |
+| Linux   | CPU    | [link](#linux-with-cpu-and-transformers) | [3] | - |
 |         | GPU    | [link](#linux-with-gpu-and-transformers) | [link](#linux-with-gpu-and-vllm) | - |
-| macOS   | CPU    | ?? [link](#macos-with-cpu-and-transformers) | - | ?? [link](#macos-with-cpu-and-mlx) |
+| macOS   | CPU    | [1] | [1] | [1] |
 |         | MPS    | [link](#macos-with-mps-and-transformers) | - | [link](#macos-with-mps-and-mlx) |
-| Windows | CPU    | [link](#windows-with-cpu-and-transformers) | ?? [link](#windows-with-cpu-and-vllm) | - |
-|         | GPU    | [link](#windows-with-gpu-and-transformers) | ?? [link](#windows-with-gpu-and-vllm) | - |
+| Windows | CPU    | [link](#windows-with-cpu-and-transformers) | [3] | - |
+|         | GPU    | [link](#windows-with-gpu-and-transformers) | [2] | - |
 
-?? = maybe possible; \- = not possible
+\- = not possible  
+1: All Apple Silicon Macs have MPS; older Intel Macs with CPU not supported.  
+2: vLLM does not natively support Windows GPU, https://docs.vllm.ai/en/stable/getting_started/installation/gpu/.  
+3: Theoretically it might be possible to run vLLM CPU, but not clear there's a benefit over transformers. 
+
 
 ## macOS with MPS and transformers
 
@@ -117,7 +121,6 @@ uv run main.py
 
 ## Windows with GPU and transformers
 
-Known issue; don't run yet
 
 ```powershell
 uv init --python 3.13 
@@ -133,57 +136,25 @@ uv add git+https://github.com/ahalterman/NGEC-2025 --extra models
 uv run main.py --gpu
 ```
 
-```
-Detected OS: Windows
-Platform: Windows-11-10.0.26200-SP0
-Python version: 3.13.7 (main, Aug 18 2025, 19:16:27) [MSC v.1944 64 bit (AMD64)]
-Torch can be imported
-# Checking device availability (selected: gpu=True, mps=False)
-# Checking backend (selected: transformers)
-Transformers backend selected
-# Checking NGEC functionality
-NGEC can be imported
-`torch_dtype` is deprecated! Use `dtype` instead!
-Device set to use cuda:0
-Attribute model test works
-Actor resolver test is not working, error message:
-unsupported operand type(s) for +: 'WindowsPath' and 'str'
-```
-
-
-## Windows with CPU and vllm
-
-```powershell
-uv init --python 3.13 
-uv venv --seed
-.venv\Scripts\Activate
-
-# Task 1: this next line needs to be verified
-uv add torch torchvision
-# Test this works
-uv run check_cpu.py
-
-uv add git+https://github.com/ahalterman/NGEC-2025 --extra models --extra vllm
-
-uv run main.py --backend vllm 
-```
 
 
 ## Windows with GPU and vllm
 
+Technically not supported.
+
 ```powershell
 uv init --python 3.13 
 uv venv --seed
 .venv\Scripts\Activate
 
-# Task 1: this next line needs to be verified
-uv add torch torchvision
+# Adjust based on CUDA version
+uv pip install torch torchvision --index-url https://download.pytorch.org/whl/cu130
 # Test this works
 uv run check_gpu.py
 
 uv add git+https://github.com/ahalterman/NGEC-2025 --extra models --extra vllm
 
-uv run main.py --backend vllm 
+uv run main.py --gpu --backend vllm 
 ```
 
 ## Linux with GPU and transformers
@@ -224,16 +195,22 @@ uv run main.py --gpu --backend vllm
 
 ## Linux with CPU and transformers
 
+```
+uv init --python 3.13 
+uv venv --seed
+source .venv/bin/activate
 
-## Linux with CPU and vllm
+# The torch Linux version is GPU by default, so need special index
+# Ideally add to project.toml, see https://docs.astral.sh/uv/guides/integration/pytorch/#configuring-accelerators-with-optional-dependencies
+uv pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+uv run check_cpu.py
+
+uv add git+https://github.com/ahalterman/NGEC-2025 --extra models 
+
+uv run main.py 
+```
 
 
-## macOS with CPU and transformers
 
-Not sure there even is an option for macOS CPU
-
-## macOS with CPU and mlx
-
-Not sure there even is an option for macOS CPU
 
 
