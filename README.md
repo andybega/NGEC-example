@@ -103,7 +103,6 @@ uv run main.py --backend mlx
 
 ## Windows with CPU and transformers
 
-Hangs somewhere, not sure why. 
 
 ```powershell
 uv init --python 3.13 

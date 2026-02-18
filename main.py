@@ -182,10 +182,16 @@ def main(os="macOS", gpu=False, mps=True, backend="transformers"):
                 return
         else:
             print("Using CPU")
-    
-    if os=="linux" or os=="windows":
-        print("Not implemented yet")
 
+    if os=="Linux" or os=="Windows":
+        if gpu:
+            if gpu_available():
+                print("GPU is available")
+            else:
+                print("GPU is not available, skipping rest")
+                return
+        else:
+            print("Using CPU")
 
     # Check for backend availability
     print(f"# Checking backend (selected: {backend})")
