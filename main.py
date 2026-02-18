@@ -142,7 +142,7 @@ def actor_resolver_works(user, password) -> tuple[bool, str]:
         logging.getLogger("tzlocal").setLevel(logging.WARNING)
         logging.getLogger("sentence_transformers.SentenceTransformer").setLevel(logging.WARNING)
 
-        client = setup_es_client(hosts=["localhost"], port=9200, user=user, password=password)
+        client = setup_es_client(hosts="167.71.184.1", port=9200, http_auth=(user, password))
 
         resolver = ActorResolver(es_client=client)
         resolver.actor_to_code("Angela Merkel")
